@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' file:; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>Không kết nối được Muse</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; font: 14px "Segoe UI Variable Text", "Segoe UI", sans-serif; color: #1f1f24; }
+  main { height: 100%; display: grid; place-items: center; text-align: center; padding: 16px; box-sizing: border-box; }
+  img { width: 56px; height: 56px; border-radius: 12px; opacity: .9; }
+  h1 { font-size: 20px; margin: 16px 0 6px; font-weight: 600; }
+  p { color: #5d5d66; margin: 0 0 4px; max-width: 420px; line-height: 1.5; }
+  .err { font-size: 12px; color: #8a8a93; margin-top: 8px; }
+  button { margin-top: 18px; padding: 9px 22px; border: 0; border-radius: 999px; background: #0a66ff; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  button:hover { background: #0857d6; }
+  button:focus-visible { outline: 2px solid #0a66ff; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <div>
+    <img src="assets/icon.png" alt="">
+    <h1 id="h">Không kết nối được Muse</h1>
+    <p id="msg">Kiểm tra mạng Internet. Muse Desktop sẽ tự thử lại.</p>
+    <p class="err" id="err"></p>
+    <button id="retry">Thử lại ngay</button>
+    <p class="err" id="count"></p>
+  </div>
+</main>
+<script>
+  const q = new URLSearchParams(location.search);
+  if (q.get('r') === 'crash') {
+    document.getElementById('h').textContent = 'Trang Muse bị dừng nhiều lần';
+    document.getElementById('msg').textContent = 'Muse Desktop đã tự tải lại 3 lần trong 1 phút nhưng chưa ổn. Bấm Thử lại khi sẵn sàng.';
+  }
+  document.getElementById('err').textContent = q.get('d') ? 'Lỗi: ' + q.get('d') : '';
+  const target = /^https?:\/\//.test(q.get('u') || '') ? q.get('u') : 'https://muse.ai/';
+  const go = () => location.replace(target);
+  document.getElementById('retry').addEventListener('click', go);
+  if (q.get('r') !== 'crash') {
+    let n = 15;
+    const tick = () => {
+      if (navigator.onLine && n <= 0) return go();
+      document.getElementById('count').textContent = navigator.onLine ? 'Tự thử lại sau ' + n + ' giây' : 'Đang chờ có mạng…';
+      n = Math.max(0, n - 1);
+      setTimeout(tick, 1000);
+    };
+    tick();
+    window.addEventListener('online', () => setTimeout(go, 1500));
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' file:; style-src 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+<title>Muse</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f6f6f7; font: 12px "Segoe UI Variable Text", "Segoe UI", sans-serif; color: #2b2b30; user-select: none; }
+  .bar { display: flex; align-items: center; height: 36px; padding: 0 0 0 10px; -webkit-app-region: drag; box-sizing: border-box; }
+  .logo { width: 18px; height: 18px; border-radius: 4px; margin-right: 8px; }
+  .name { font-weight: 600; font-size: 12.5px; margin-right: 6px; }
+  .ver { font-size: 12px; color: #7a7a83; margin-right: 10px; font-variant-numeric: tabular-nums; -webkit-app-region: no-drag; cursor: default; }
+  .nav { display: flex; gap: 2px; -webkit-app-region: no-drag; }
+  button { width: 30px; height: 26px; border: 0; border-radius: 6px; background: transparent; color: #3b3b40; display: grid; place-items: center; cursor: default; }
+  button:hover:not(:disabled) { background: #e7e7eb; }
+  button:active:not(:disabled) { background: #dcdce1; }
+  button:disabled { color: #b8b8bf; }
+  button:focus-visible { outline: 2px solid #0a66ff; outline-offset: -2px; }
+  svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .title { flex: 1; min-width: 0; text-align: center; color: #6b6b73; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 12px; }
+  .spin { display: none; width: 12px; height: 12px; border: 2px solid #cfd0d6; border-top-color: #0a66ff; border-radius: 50%; animation: s .8s linear infinite; vertical-align: -2px; margin-right: 6px; }
+  .loading .spin { display: inline-block; }
+  .upd { width: auto; display: inline-flex; gap: 6px; align-items: center; padding: 0 12px 0 10px; margin-right: 8px; border-radius: 999px; background: #0a66ff; color: #fff; font: 600 12px "Segoe UI", sans-serif; -webkit-app-region: no-drag; }
+  .upd:hover:not(:disabled) { background: #0857d6; }
+  .upd[hidden] { display: none; }
+  @keyframes s { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <img class="logo" src="assets/icon.png" alt="">
+  <span class="name">Muse</span>
+  <span class="ver" id="ver"></span>
+  <div class="nav">
+    <button id="back" title="Quay lại (Alt+←)" aria-label="Quay lại" disabled><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
+    <button id="forward" title="Tiến tới (Alt+→)" aria-label="Tiến tới" disabled><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
+    <button id="reload" title="Tải lại (Ctrl+R)" aria-label="Tải lại"><svg viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.5-3.6"/><path d="M13 2.5V5h-2.5"/></svg></button>
+    <button id="home" title="Trang chủ Muse" aria-label="Trang chủ Muse"><svg viewBox="0 0 16 16"><path d="M2.5 7.5 8 3l5.5 4.5"/><path d="M4 6.5V13h8V6.5"/></svg></button>
+  </div>
+  <div class="title" id="title"><span class="spin"></span><span id="ttext">Muse</span></div>
+  <button id="upd" class="upd" hidden title="Cài bản mới, app tự mở lại"><svg viewBox="0 0 16 16"><path d="M8 2.5v8"/><path d="m4.5 7 3.5 3.5L11.5 7"/><path d="M3 13.5h10"/></svg><span id="updt"></span></button>
+  <div id="pad" style="width:138px;flex:none"></div>
+</div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  $('upd').addEventListener('click', () => window.museBar.cmd('update'));
+  for (const id of ['back', 'forward', 'reload', 'home']) $(id).addEventListener('click', () => window.museBar.cmd(id));
+  window.museBar.onState((s) => {
+    $('back').disabled = !s.back;
+    $('forward').disabled = !s.fwd;
+    $('title').classList.toggle('loading', !!s.loading);
+    $('ttext').textContent = s.offline ? 'Không kết nối được Muse' : (s.loading ? 'Đang tải…' : (s.title || 'Muse'));
+    document.title = s.title || 'Muse';
+    $('pad').style.width = (s.controlsW || 138) + 'px';
+    if (s.version) {
+      $('ver').textContent = 'v' + s.version;
+      const d = s.updatedAt ? new Date(s.updatedAt).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+      $('ver').title = 'Muse Desktop ' + s.version + ' · Electron ' + s.electron + (d ? ' · cập nhật lúc ' + d : '') + (s.update ? ' · có bản mới ' + s.update : ' · đang là bản mới nhất');
+    }
+    $('upd').hidden = !s.update;
+    $('updt').textContent = s.update ? 'Cập nhật lên ' + s.update : '';
+  });
+  window.museBar.cmd('ready');
+</script>
+</body>
+</html>

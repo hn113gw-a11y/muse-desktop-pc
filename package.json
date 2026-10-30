@@ -1,1 +1,44 @@
-{"author":"a yeu","build":{"appId":"ai.muse.desktop.pc","files":["main.js","preload.js","tabbar.html","assets/**","package.json"],"nsis":{"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true,"createStartMenuShortcut":true,"oneClick":false,"shortcutName":"Muse Desktop"},"productName":"Muse Desktop","publish":[{"owner":"hn113gw-a11y","provider":"github","releaseType":"release","repo":"muse-desktop-pc"}],"win":{"icon":"build/icon.ico","target":["nsis","portable"]}},"dependencies":{"electron-updater":"^6.8.11"},"description":"Muse Desktop for Windows PC - one shared home for the whole Muse team: Em chinh, Miu, Bo, Sua, Nep, each with its own muse.ai session in a single window, plus tray, quick entry hotkey and auto update via GitHub Releases","devDependencies":{"electron":"^45.1.0","electron-builder":"^26.18.0"},"license":"MIT","main":"main.js","name":"muse-desktop-pc","scripts":{"dist":"electron-builder --win nsis portable","pack":"electron-builder --win --dir","release":"electron-builder --win nsis -p always","start":"electron ."},"version":"2.2.1"}
+{
+  "author": "a yeu",
+  "build": {
+    "appId": "ai.muse.desktop.pc",
+    "files": [
+      "main.js",
+      "titlebar-preload.js",
+      "titlebar.html",
+      "offline.html",
+      "assets/**",
+      "package.json"
+    ],
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "oneClick": false,
+      "shortcutName": "Muse Desktop"
+    },
+    "productName": "Muse Desktop",
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }
+  },
+  "description": "Muse Desktop for Windows PC - Electron app for muse.ai, built the way Claude Desktop runs: custom title bar, tray, quick entry, window state, local auto update, start hidden with Windows, logs and auto recovery",
+  "devDependencies": {
+    "electron": "44.9.3",
+    "electron-builder": "^26.18.0"
+  },
+  "license": "MIT",
+  "main": "main.js",
+  "name": "muse-desktop-pc",
+  "scripts": {
+    "dist": "electron-builder --win nsis portable && node tools/publish-local.js",
+    "pack": "electron-builder --win --dir",
+    "start": "electron .",
+    "publish-local": "node tools/publish-local.js"
+  },
+  "version": "2.2.9"
+}

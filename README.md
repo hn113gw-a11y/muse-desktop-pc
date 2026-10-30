@@ -1,87 +1,22 @@
-# Muse Desktop v2.2 cho PC (Windows) - lam theo khuon Claude Desktop
+# Muse Desktop 2.2 cho PC (Windows) - chay giong Claude Desktop
 
-## Tu cap nhat qua GitHub Releases (tu ban 2.2.1)
+Ban 2.1 lam theo cach Claude Desktop (4.29, Electron 44.9.3) dang chay tren may nay:
 
-App da duoc cau hinh nguon cap nhat: kho `hn113gw-a11y/muse-desktop-pc`
-tren GitHub (muc `publish` trong package.json). App tu kiem tra ban moi
-khi khoi dong va moi 6 gio, tai xong se hoi khoi dong lai de cai.
-
-Dieu kien truoc khi phat hanh lan dau:
-
-1. Kho `muse-desktop-pc` phai ton tai va de **Public** tren tai khoan
-   GitHub hn113gw-a11y (app chi doc duoc Release cua kho cong khai)
-2. Tao 1 Personal Access Token tren GitHub: Settings -> Developer
-   settings -> Personal access tokens -> Tokens (classic) -> Generate
-   new token, tich quyen **repo**. Token nay chi de tren may cua ban,
-   TUYET DOI khong gui qua chat hay dan vao file
-
-Phat hanh 1 ban moi (tren may Windows, trong thu muc code):
-
-```powershell
-$env:GH_TOKEN = "dan-token-vao-day"
-npm install
-npm run release
-```
-
-Lenh `release` se dong goi ban Setup (NSIS) va tu tai len GitHub Release
-kem file `latest.yml` de cac may da cai tu tim thay ban moi.
-Moi lan phat hanh tiep theo: tang so `version` trong package.json
-(vi du 2.2.1 -> 2.2.2) roi chay lai dung 1 lenh tren.
-
-Luu y:
-
-- Ban 2.2.1 van phai **cai tay 1 lan** (cai bang file Setup trong Release
-  dau tien, hoac chay `npm run dist` nhu cu). Tu ban 2.2.2 tro di moi
-  tu cap nhat that
-- Chi ban **Setup (NSIS)** tu cap nhat duoc. Ban portable khong tu cap
-  nhat, day la gioi han cua co che cap nhat
-- File Setup chua co chu ky so nen Windows SmartScreen co the canh bao
-  luc cai lan dau: bam "More info" -> "Run anyway"
-
-## Ban 2.2: Nha chung cho ca doi
-
-- Ca doi o trong **1 cua so duy nhat**: Em chinh, Miu (Nghien cuu), Bo
-  (Ky thuat), Sua (Phan bien), Nep (Thu ky). Thanh chon e nam o tren cung
-  cua so, bam ten la doi e; cung doi duoc bang phim Ctrl+1..5, menu Muse
-  hoac muc "Doi e" trong menu khay
-- **Moi e mot phien dang nhap rieng** (partition rieng): dang nhap tai khoan
-  khac nhau cung duoc, khong lan cookie, khong go nham nha
-- Cac e chi **mo phien khi duoc chon lan dau** (khoi dong nhe), e nao khong
-  dung thi bam "Cho e nay di ngu" tren thanh chon e de dong phien, giai
-  phong RAM; dang nhap cua e do van duoc giu tren dia, chon lai la vao tiep
-- Dung chung 1 icon khay, 1 phim tat goi nhanh Ctrl+Shift+Space (mo phien
-  cua Em chinh), 1 muc chay cung Windows: het xung dot kieu chay nhieu ban
-  rieng (tranh phim tat, gop taskbar, tranh deep link)
-- Moi phien van giu day du bao ve cua v2.1: sandbox, tu tai lai khi mat
-  mang/trang sap, link ngoai mo bang trinh duyet mac dinh
-
-## Ban 2.1 sua 4 loi cua ban 2.0
-
-- **Khong chan tat may nua**: app nghe su kien ket thuc phien lam viec cua
-  Windows (session-end). Khi Windows tat may/dang xuat thi app thoat thang,
-  chi thu xuong khay khi nguoi dung tu bam dong cua so
-- **Khong trang man hinh vinh vien**: trang tai that bai (mat mang luc mo may,
-  muse.ai treo) thi app tu tai lai theo nhip 2s, 5s, 10s, 30s, 60s.
-  Tien trinh hien thi sap hoac trang khong phan hoi cung tu tai lai
-- **Thong bao khay hien duoc tren Windows**: app khai bao AppUserModelID
-  `ai.muse.desktop.pc` ngay tu dau, trung voi appId cua bo cai
-- **Electron 45** (ban moi nhat luc lam ban nay) thay cho Electron 33 da cu,
-  kem theo electron-builder 26 va electron-updater 6.8
-
-Ban v2 nang cap tu ban boc web v1 len dang app desktop dang hoang,
-hoc theo cach Anthropic lam Claude Desktop (cung dung Electron):
-
-- Cua so Electron rieng, giu dang nhap, icon E (M cat facet) da chon
-- **Khay he thong (tray)**: dong cua so la thu xuong khay, app van chay nen.
-  Bam icon Muse o khay de mo lai, chuot phai co menu Mo Muse / Goi nhanh / Thoat
-- **Goi nhanh (Quick Entry)**: nhan `Ctrl + Shift + Space` o bat ky dau
-  de bat/tat cua so Muse nho noi tren man hinh, nhan `Esc` hoac bam ra ngoai de an
-- **Chay cung Windows**: bat/tat trong menu chuot phai cua icon khay
-- **Deep link**: dang ky giao thuc `muse-desktop://` de mo app tu link
-- **Tu cap nhat**: da tich hop electron-updater. App chi tu kiem tra cap nhat
-  sau khi da dong goi VA da cau hinh nguon cap nhat (xem muc duoi).
-  Chua cau hinh thi app bo qua trong im lang, chay binh thuong
-- Chi chay 1 ban duy nhat: mo lai app la cua so cu hien len
+- **Electron 44.9.3** (cung ban Claude dang dung; 2.0 la Electron 33 cu, thieu ban va bao mat)
+- **Thanh tieu de tu ve**: logo + Quay lai / Tien toi / Tai lai / Trang chu + ten trang, 3 nut cua so cua Windows
+- **Nho vi tri, kich thuoc, phong to** cua so (`window-state.json`), cai dat rieng (`config.json`, nho ca vi tri cua so Goi nhanh)
+- **Chay cung Windows o che do an** (`--startup`, chi hien icon o khay), bat/tat trong menu khay
+- **Dong cua so = thu xuong khay**, bam icon khay 1 lan la mo lai; khi Windows tat may/dang xuat thi thoat that (2.0 co the chan tat may)
+- **Tu hoi phuc**: mat mang -> man "Khong ket noi duoc Muse" tu thu lai; trang sap -> tu tai lai (toi da 3 lan/phut); trang treo -> hoi Doi / Tai lai; may thuc day -> tu thu lai
+- **Khong ham trang khi cua so bi che / o khay** (Muse lam viec lau van chay)
+- **Nhat ky** `%APPDATA%\muse-desktop-pc\logs\main.log` (menu khay: Mo thu muc nhat ky) + bao loi sap Crashpad luu tren may, khong gui di dau
+- **Menu chuot phai**: cat/sao chep/dan, sao chep/mo link, sao chep/luu anh, luu video, quay lai, tai lai
+- **Tai file** tu dong vao `Tai xuong\Muse` + thong bao (bam thong bao de mo thu muc)
+- **Quyen**: chi cho muse.ai/Meta dung mic, thong bao, clipboard, toan man hinh, vi tri; quyen khac tu choi
+- Dang nhap bang Instagram mo ngay trong app; tat gach do chinh ta (go tieng Viet khong bi gach)
+- Thong bao Windows hien dung (dang ky AppUserModelId `ai.muse.desktop.pc`)
+- Goi nhanh `Ctrl + Shift + Space`, deep link `muse-desktop://thread/<id>`, chi chay 1 ban
+- **Tu cap nhat tren may (2.2)**: xem muc "Tu cap nhat" ben duoi
 
 ## Can co
 
@@ -106,35 +41,40 @@ npm run dist
 
 Vao thu muc `dist\` se co:
 
-- File cai dat `Muse Desktop Setup 2.2.0.exe`
-- File portable `Muse Desktop 2.2.0.exe` - bam la chay, khong can cai
+- File cai dat `Muse Desktop Setup 2.2.1.exe`
+- File portable `Muse Desktop 2.2.1.exe` - bam la chay, khong can cai
 
 Icon cua ca app lan bo cai deu la icon E trong `build/icon.ico`.
 
-## Bat tu cap nhat that
+## Tu cap nhat (2.2)
 
-electron-updater can 1 noi chua ban cap nhat. Cach pho bien nhat la
-GitHub Releases. Khi co repo GitHub cho app, them vao `package.json`:
+Khong can GitHub hay may chu. Moi lan dong goi:
 
-```json
-"build": {
-  "publish": {
-    "provider": "github",
-    "owner": "<ten-github>",
-    "repo": "<ten-repo>"
-  }
-}
+```bat
+cd muse-desktop-pc
+npm run dist
 ```
 
-roi moi lan tang so `version` va chay `npm run dist`, tai cac file trong
-`dist\` len muc Releases cua repo. App da cai se tu thay ban moi,
-tai ngam va hoi khoi dong lai de cap nhat.
+lenh nay (sau electron-builder) chay `tools/publish-local.js`: chep `Muse Desktop Setup <ban>.exe` vao
+`%USERPROFILE%\.muse-desktop\updates\` kem `update.json` (so phien ban + ma kiem tra SHA-256).
+(Khong dung AppData: chuong trinh chay tu ung dung MSIX nhu Claude bi Windows tach rieng AppData, Muse Desktop se khong thay file.)
+
+Muse Desktop dang chay tu do thu muc nay: luc mo app, moi 2 phut, va ngay khi thu muc thay doi.
+Thay ban moi hon (va ma kiem tra khop) thi TU CAI, khong hoi:
+- cua so dang an o khay / thu nho: cai ngay
+- may de yen tu 5 phut: cai ngay
+- anh dang dung: hien nut "Cap nhat len <ban>" tren thanh tieu de (bam la cai), cho toi luc anh an cua so hoac ngung dung
+
+Khi cai: app tu dong, bo cai chay im lang (`/S --force-run`) roi tu mo lai (dang o khay thi mo lai o khay), bao "Da cap nhat len <ban>". Dang nhap Muse giu nguyen.
+Nho tang `version` trong `package.json` truoc khi `npm run dist`.
 
 ## Phim tat
 
 - `Ctrl + Shift + Space` : goi nhanh Muse
 - `Ctrl + R` : tai lai trang
 - `Ctrl + W` : thu xuong khay
+- `Alt + ←/→` : quay lai / tien toi
+- `Ctrl + +/-/0` : phong to / thu nho / 100%
 - `F11` : toan man hinh
 - `Ctrl + Q` : thoat han app
 
